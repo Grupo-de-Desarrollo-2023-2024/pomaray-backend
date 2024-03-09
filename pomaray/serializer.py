@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from pomaray.models import Student
+from pomaray.models.student import Student
 
 
 class StudentSerializer(serializers.ModelSerializer):

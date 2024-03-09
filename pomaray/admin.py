@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pomaray.models import Student
+from pomaray.models.student import Student
 
 # Register your models here.
 admin.site.register(Student)

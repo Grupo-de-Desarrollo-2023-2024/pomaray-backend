@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from pomaray.models import Student
+from pomaray.models.student import Student
 from pomaray.serializer import StudentSerializer
 
 
