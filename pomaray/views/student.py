@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from pomaray.models.student import Student
-from pomaray.serializer import StudentSerializer
+from pomaray.serializers.student import StudentSerializer
 
 
 # Create your views here.
