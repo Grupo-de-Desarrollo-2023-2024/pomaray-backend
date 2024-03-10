@@ -23,12 +23,11 @@ urlpatterns = [
     path("employees/", include("pomaray.api.employee")),
     path("department/", include("pomaray.api.department")),
     path("position/", include("pomaray.api.position")),
-<<<<<<< HEAD
+     path("tutor/", include("pomaray.api.tutor")),
+      path("tutor/", include("pomaray.api.activities")),
     path("book/", include("library.api.book")),
     path("editorial/", include("library.api.editorial")),
     path("author/", include("library.api.author")),
     path("loan/", include("library.api.loan")),
-=======
-    path("tutor/", include("pomaray.api.tutor")),
->>>>>>> c91157c615cc72c62e57768e8fabfb725db7058f
+   
 ]
