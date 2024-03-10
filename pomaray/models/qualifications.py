@@ -34,3 +34,23 @@ class tecnicQualification(Qualification):
     RA8 = models.IntegerField()
     RA9 = models.IntegerField()
     RA10 = models.IntegerField()
+
+    def calculate_CF(self):
+       
+        sumatoria = (
+            self.RA1
+            + self.RA2
+            + self.RA3
+            + self.RA4
+            + self.RA5
+            + self.RA6
+            + self.RA7
+            + self.RA8
+            + self.RA9
+            + self.RA10
+        )
+        return sumatoria   
+
+    def save(self, *args, **kwargs):
+        self.CF = self.calculate_CF()
+        super(tecnicQualification, self).save(*args, **kwargs)
