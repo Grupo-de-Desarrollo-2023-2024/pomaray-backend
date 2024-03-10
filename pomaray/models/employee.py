@@ -6,8 +6,8 @@ from pomaray.models.position import Cargo
 
 
 class Employee(Person):
-    Departamento = models.ForeignKey(Department,  on_delete=models.CASCADE, max_length=100)
-    Cargo = models.ForeignKey(Cargo,  on_delete=models.CASCADE, max_length=100)
+    Departament = models.ForeignKey(Department,  on_delete=models.CASCADE, max_length=100)
+    Position = models.ForeignKey(Cargo,  on_delete=models.CASCADE, max_length=100)
 
     def __str__(self) -> str:
         return self.First_Name
