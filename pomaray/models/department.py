@@ -8,4 +8,4 @@ class Department(models.Model):
     Status = models.BooleanField()
 
     def __str__(self) -> str:
-        return self.nombre
+        return self.Name
