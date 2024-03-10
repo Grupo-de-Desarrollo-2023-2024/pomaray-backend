@@ -74,43 +74,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# sql_server = {
-#     'default': {
-#         'ENGINE': 'sql_server.pyodbc',
-#         'NAME': 'POMARAY',
-#         'USER': 'sa',
-#         'PASSWORD': '1234',
-#         'HOST': "SANTOSGUZMAN",
-#         'PORT': '',
-
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 18 for SQL Server',
-#             'ssl': {
-#                 'encrypt': True,
-#                 # Configuración para confiar en el certificado del servidor (en desarrollo)
-#                 'trust_server_certificate': True,
-#                 # 'certfile': '/ruta/al/archivo/certificado.pem',  # Opcional: Ruta al archivo de certificado en tu máquina cliente
-#             },
-#         }
-#     }
-# }
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'POMARAY',
-        'USER': 'sa',
-        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '',
         'OPTIONS':{
-            'driver': 'ODBC Driver 17 for SQL Server'
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'MARS_Connection': 'True',
+            'Trusted_Connection': 'Yes'
         }
     }
 }
