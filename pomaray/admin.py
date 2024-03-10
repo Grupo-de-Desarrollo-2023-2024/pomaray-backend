@@ -1,4 +1,5 @@
 from django.contrib import admin
+from pomaray.models.emergency import Emergency
 
 from pomaray.models.student import Student
 from pomaray.models.employee import Employee
@@ -16,3 +17,5 @@ admin.site.register(Cargo)
 admin.site.register(Tutor)
 admin.site.register(Activities)
 admin.site.register(academicQualification)
+
+admin.site.register(Emergency)

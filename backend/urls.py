@@ -1,19 +1,3 @@
-"""backend URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
 from django.contrib import admin
 from django.urls import path, include
 
@@ -25,7 +9,8 @@ urlpatterns = [
     path("academicQualification/", include("pomaray.api.qualifications")),
     path("position/", include("pomaray.api.position")),
     path("tutor/", include("pomaray.api.tutor")),
-    path("tutor/", include("pomaray.api.activities")),
+    path("emergency/", include("pomaray.api.emergency")),
+    path("activities/", include("pomaray.api.activities")),
     path("book/", include("library.api.book")),
     path("editorial/", include("library.api.editorial")),
     path("author/", include("library.api.author")),
