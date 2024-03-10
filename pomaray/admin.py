@@ -7,7 +7,6 @@ from pomaray.models.department import Department
 from pomaray.models.position import Cargo
 from pomaray.models.tutor import Tutor
 from pomaray.models.activities import Activities
-from pomaray.models.qualifications import academicQualification
 
 # Register your models here.
 admin.site.register(Student)
@@ -16,6 +15,4 @@ admin.site.register(Department)
 admin.site.register(Cargo)
 admin.site.register(Tutor)
 admin.site.register(Activities)
-admin.site.register(academicQualification)
-
 admin.site.register(Emergency)
