@@ -23,4 +23,8 @@ urlpatterns = [
     path("employees/", include("pomaray.api.employee")),
     path("department/", include("pomaray.api.department")),
     path("position/", include("pomaray.api.position")),
+    path("book/", include("library.api.book")),
+    path("editorial/", include("library.api.editorial")),
+    path("author/", include("library.api.author")),
+    path("loan/", include("library.api.loan")),
 ]

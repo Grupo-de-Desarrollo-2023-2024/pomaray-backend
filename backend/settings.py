@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'coreapi',
     'rest_framework',
-    'pomaray'
+    'pomaray',
+    'library'
 ]
 
 MIDDLEWARE = [
