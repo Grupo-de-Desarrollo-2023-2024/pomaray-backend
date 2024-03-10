@@ -8,6 +8,7 @@ class Sex(models.TextChoices):
 
 
 class Subject(models.TextChoices):
+    
     MATH = "M", "Matemáticas"
     SCIENCE = "N", "Naturales"
     HISTORY = "S", "Sociales"

@@ -1,5 +1,5 @@
 from django.db import models
-from pomaray.utils.models import Person
+from pomaray.utils.person import Person
 
 
 class Student(Person):

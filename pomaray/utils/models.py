@@ -1,37 +1,26 @@
 from django.db import models
+from pomaray.models.employee import Employee
+from pomaray.models.student import Student
 
 # Create your models here.
 
 """
 Aqui se definen clases padres para instanciar clases hijas.
 """
-
-
-# Persona
-class Person(models.Model):
-    First_Name = models.CharField(max_length=100)
-    Last_Name = models.CharField(max_length=100)
-    Email = models.EmailField()
-    Birthdate = models.DateTimeField()
-    Gender = models.CharField(max_length=255)
-    Address = models.TextField(max_length=250)
-    Photo = models.BinaryField()
-
-    class Meta:
-        abstract = True  # Indica que esta clase no se debe crear como una tabla en la base de datos
-
-
-# Clase derivada que hereda de BaseFields y agrega campos adicionales
+#dummy_student = Student.objects.filter(First_Name="John", Last_Name="Doe").first()
+#dummy_teacher = Employee.objects.filter(First_Name="John", Last_Name="Doe").first()
 
 
 # Qualification
 class Qualification(models.Model):
     Period = models.CharField(max_length=100)
-    Student = models.ForeignKey
-    CF = models.IntegerField
-    Teacher = models.ForeignKey
+    Student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, 
+    )
+    CF = models.IntegerField(default=0)
+    Teacher = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, 
+    )
+
     class Meta:
         abstract = True  # Indica que esta clase no se debe crear como una tabla en la base de datos
-
-
-# Clase derivada que hereda de BaseFields y agrega campos adicionales

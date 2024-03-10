@@ -1,5 +1,5 @@
 from django.db import models
-from pomaray.utils.models import Person
+from pomaray.utils.person import Person
 from pomaray.models.department import Department
 from pomaray.models.position import Cargo
 
