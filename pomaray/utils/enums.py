@@ -33,7 +33,6 @@ class Techniques(models.TextChoices):
     HVAC = "RAA", "Refrigeración y Acondicionamiento de Aire"
 
 
-
 class Course(models.TextChoices):
     # Informática
     FOURTH_DAI_A = (
