@@ -1,7 +1,7 @@
 from django.db import models
 from pomaray.utils.models import Qualification
 from pomaray.utils.enums import Subject
-
+from pomaray.models.moduletechnique import ModuleTechnique
 
 
 class academicQualification(Qualification):
@@ -24,7 +24,7 @@ class academicQualification(Qualification):
 
 
 class tecnicQualification(Qualification):
-    Module = models.CharField(max_length=100)
+    Module = models.ForeignKey(ModuleTechnique, on_delete=models.CASCADE)
     RA1 = models.IntegerField()
     RA2 = models.IntegerField()
     RA3 = models.IntegerField()
