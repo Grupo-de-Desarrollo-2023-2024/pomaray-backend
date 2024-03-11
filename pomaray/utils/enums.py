@@ -4,7 +4,7 @@ from django.db import models
 class Gender(models.TextChoices):
     MALE = "M", "Masculino"
     FEMALE = "F", "Femenino"
-    OTHER = "O", "Otro"
+
 
 
 class Subject(models.TextChoices):
