@@ -15,7 +15,7 @@ router.register(r'loan', LoanView, 'loan')
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),
-    path('docs/', include_docs_urls(title='Editorial API')),
-    path('docs/', include_docs_urls(title='Author API')),
-    path('docs/', include_docs_urls(title='Book API')),
-    path('docs/', include_docs_urls(title='Loan API'))]
+    path('docs/editorial/', include_docs_urls(title='Editorial API')),
+    path('docs/autor/', include_docs_urls(title='Author API')),
+    path('docs/book/', include_docs_urls(title='Book API')),
+    path('docs/loan/', include_docs_urls(title='Loan API'))]
