@@ -1,10 +1,10 @@
 from django.db import models
 
 
+
 class Gender(models.TextChoices):
     MALE = "M", "Masculino"
     FEMALE = "F", "Femenino"
-
 
 
 class Subject(models.TextChoices):
@@ -31,6 +31,9 @@ class Techniques(models.TextChoices):
     ELECTRONICS = "E", "Electrónica"
     ELECTRICITY = "EL", "Electricidad"
     HVAC = "RAA", "Refrigeración y Acondicionamiento de Aire"
+
+
+# Asegúrate de importar correctamente tu modelo
 
 
 class Course(models.TextChoices):

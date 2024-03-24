@@ -9,7 +9,7 @@ class Person(models.Model):
     Birthdate = models.DateTimeField()
     Gender = models.CharField(max_length=255, choices=Gender.choices)
     Address = models.TextField(max_length=250)
-    Photo = models.BinaryField()
+    Photo_URL = models.CharField(max_length=255)
 
     class Meta:
         abstract = True  # Indica que esta clase no se debe crear como una tabla en la base de datos

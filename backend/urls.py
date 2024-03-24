@@ -7,7 +7,7 @@ urlpatterns = [
     path("employees/", include("pomaray.api.urls")),
     path("department/", include("pomaray.api.urls")),
     path("academicQualification/", include("pomaray.api.urls")),
-     path("tecnicQualification/", include("pomaray.api.urls")),
+    path("tecnicQualification/", include("pomaray.api.urls")),
     path("position/", include("pomaray.api.urls")),
     path("tutor/", include("pomaray.api.urls")),
     path("internship/", include("pomaray.api.urls")),
@@ -17,4 +17,5 @@ urlpatterns = [
     path("editorial/", include("library.api.urls")),
     path("author/", include("library.api.urls")),
     path("loan/", include("library.api.urls")),
+   
 ]
