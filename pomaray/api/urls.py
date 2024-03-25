@@ -15,6 +15,7 @@ from pomaray.views.student import StudentView
 from pomaray.views.tutor import TutorView
 from pomaray.views.moduletechnique import ModuleTechniqueView
 
+
 router = routers.DefaultRouter()
 router.register(r"tutor", TutorView, "tutor")
 router.register(r"activities", ActivitiesView, "activities")
@@ -43,4 +44,7 @@ urlpatterns = [
     path("docs/academic", include_docs_urls(title="academicQualification API")),
     path("docs/tecnic/tecnic", include_docs_urls(title="tecnicQualification API")),
     path("docs/moduleTechnique", include_docs_urls(title="moduleTechnique API")),
+    path("docs/students", include_docs_urls(title="student API"))   
+    
+    
 ]
