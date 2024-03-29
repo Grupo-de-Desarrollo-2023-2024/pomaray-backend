@@ -98,3 +98,25 @@ class Course(models.TextChoices):
     FIFTH_RAA_A = "5_RAA_A", "5to Refrigeración y Acondicionamiento de Aire Sección A"
 
     SIXTH_RAA_A = "6_RAA_A", "6to Refrigeración y Acondicionamiento de Aire Sección A"
+
+class Departments(models.TextChoices):
+    HUMAN_RESOURCES = "HR", "Recursos Humanos"
+    ACCOUNTANTS = "ACCS", "Finanzas y Contabilidad"
+    REGISTER = "RGS","Admisiones y Registro"
+    MAINTENANCE = "MTE","Limpieza y Mantenimiento"
+    SECURITY = "SCY", "Seguridad y Bienestar"
+    PSYCHOLOGY = "PSY", "Psicologia"
+    VINCULATION = "VCN", "Vinculación Sectorial"
+    ADMINISTRATIVE = "ADT", "Administracion y Coordinación"
+    EDUCATION = "EDT", "Docencia"
+    LIBRARY = "LBR", "Biblioteca"
+
+class Positions(models.TextChoices):
+    PRINCIPAL = "PR", "Director"
+    SECRETARY = "SCT","Secretaria"
+    TEACHER = "TEA","Profesor"
+    PSYCHOLOGIST = "PSY", "Psicologo"
+    LIBRARIAN = "LBR", "Bibliotecario"
+    JANITOR = "JNR", "Conserje"
+    SUPERVISOR = "SPR", "Encargado"
+    SECURITY_GUARD = "SCG", "Guardia de Seguridad"

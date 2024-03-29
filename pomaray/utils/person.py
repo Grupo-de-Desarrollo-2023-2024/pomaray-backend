@@ -8,7 +8,7 @@ class Person(models.Model):
     Last_Name = models.CharField(max_length=100)
     Full_Name = models.CharField(max_length=200, blank=True)
     Email = models.EmailField()
-    Birthdate = models.DateTimeField()
+    Birthdate = models.DateField()
     Gender = models.CharField(max_length=255, choices=Gender.choices)
     Address = models.CharField(max_length=500)
     Photo_URL = models.CharField(max_length=4000)
