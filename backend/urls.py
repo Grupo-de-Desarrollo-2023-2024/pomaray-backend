@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from pomaray.views.auth import RegisterView, LoginView, UserView, LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -17,6 +18,10 @@ urlpatterns = [
     path("editorial/", include("library.api.urls")),
     path("author/", include("library.api.urls")),
     path("loan/", include("library.api.urls")),
+    path("register/", RegisterView.as_view()),
+    path("login/", LoginView.as_view()),
+    path("user/", UserView.as_view()),
+    path("logout/", LogoutView.as_view()),
     
    
 ]
