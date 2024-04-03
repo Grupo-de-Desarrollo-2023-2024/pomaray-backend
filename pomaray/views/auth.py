@@ -1,9 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from pomaray.serializers.auth import UserSerializer
 from pomaray.models.user import User
 import jwt, datetime
+from django.http import JsonResponse
+from django.views import View
+
 
 class RegisterView(APIView):
     def post(self, request):
@@ -36,9 +39,9 @@ class LoginView(APIView):
 
         response = Response()
         
-        response.set_cookie(key='jwt', value=token, httponly=True)
+        response.set_cookie(key='token', value=token, httponly=True)
         response.data = {
-            "jwt": token
+            "token": token
         }
         
         return response
@@ -46,7 +49,7 @@ class LoginView(APIView):
 
 class UserView(APIView):
     def get(self, request):
-        token = request.COOKIES.get('jwt')
+        token = request.COOKIES.get('token')
 
         if not token:
             raise AuthenticationFailed('Unauthenticated!')
@@ -64,8 +67,32 @@ class UserView(APIView):
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
-        response.delete_cookie('jwt')
+        response.delete_cookie('token')
         response.data = {
             'message': 'success'
         }
         return response
+    
+
+class verifyToken(View):
+    def get(self, request):
+        token = request.COOKIES.get('token')
+
+        if not token:
+            raise PermissionDenied({'message': 'Unauthenticated!'})
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise PermissionDenied({'message': 'Unauthenticated!'})
+
+        try:
+            user = User.objects.get(id=payload['id'])
+        except User.DoesNotExist:
+            raise PermissionDenied({'message': 'Unauthenticated!'})
+
+        return JsonResponse({
+            'id': user.id,
+            'email': user.email,
+            'username': user.username,
+        })

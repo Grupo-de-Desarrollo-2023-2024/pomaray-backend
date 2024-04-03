@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from pomaray.views.auth import RegisterView, LoginView, UserView, LogoutView
+from pomaray.views.auth import RegisterView, LoginView, UserView, LogoutView, verifyToken
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -22,6 +22,5 @@ urlpatterns = [
     path("login/", LoginView.as_view()),
     path("user/", UserView.as_view()),
     path("logout/", LogoutView.as_view()),
-    
-   
+    path("verify/", verifyToken.as_view()),
 ]
