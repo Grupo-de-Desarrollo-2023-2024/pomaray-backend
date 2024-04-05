@@ -12,8 +12,27 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        user = serializer.save()  # Guardar el usuario y obtener la instancia
+
+        # Generate JWT token after successful registration
+        payload = {
+            'id': user.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'iat': datetime.datetime.utcnow()
+        }
+        
+        # Replace 'secret' with your actual secret key for JWT
+        token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
+
+        # Prepare response with token in cookie and response data
+        response = Response()
+        response.set_cookie(key='token', value=token, httponly=True)
+        response.data = {
+            "token": token,
+            "user": serializer.data  # Optional: Include user data in response
+        }
+
+        return response
     
 
 class LoginView(APIView):
