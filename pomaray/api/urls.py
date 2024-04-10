@@ -14,7 +14,7 @@ from pomaray.views.qualifications import (
 from pomaray.views.student import StudentView
 from pomaray.views.tutor import TutorView
 from pomaray.views.moduletechnique import ModuleTechniqueView
-from pomaray.views.auth import RegisterView
+
 
 
 router = routers.DefaultRouter()

@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'coreapi',
     'rest_framework',
+    'rest_framework.authtoken',
     'pomaray',
-    'library'
+    'library',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -140,4 +142,4 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
-AUTH_USER_MODEL = 'pomaray.User'
+AUTH_USER_MODEL = 'auth.User'
