@@ -28,9 +28,9 @@ urlpatterns = [
     path("category/", include("blog.api.urls")),
     
     #AUTH URL
-    path('login', views.login),
-    path('register', views.register),
-    path('profile', views.profile),
+    path('login/', views.login),
+    path('register/', views.register),
+    path('profile/', views.profile),
     
 
   

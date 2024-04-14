@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'coreapi',
     'rest_framework',
     'rest_framework.authtoken',
-
+    'backend',
     'pomaray',
     'library',
     'blog',
@@ -145,4 +145,4 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'backend.CustomUser'

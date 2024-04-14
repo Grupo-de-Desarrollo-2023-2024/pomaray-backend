@@ -6,6 +6,7 @@ import datetime
 class Person(models.Model):
     First_Name = models.CharField(max_length=100)
     Last_Name = models.CharField(max_length=100)
+    Sur_Name = models.CharField(max_length=100, blank=True)
     Full_Name = models.CharField(max_length=200, blank=True)
     Email = models.EmailField()
     Birthdate = models.DateField()

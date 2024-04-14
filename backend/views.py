@@ -1,17 +1,18 @@
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
+    permission_classes
 )
 from .serializers import UserSerializer
 from datetime import timedelta
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from django.contrib.auth.models import User
+from backend.models import CustomUser
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import AccessToken
-
+from rest_framework.permissions import IsAdminUser
 
 token_lifetime = timedelta(hours=1)
 
@@ -23,8 +24,8 @@ def set_access_token_cookie(response, access_token):
 @api_view(["POST"])
 def login(request):
     try:
-        user = User.objects.get(username=request.data["username"])
-    except User.DoesNotExist:
+        user = CustomUser.objects.get(username=request.data["username"])
+    except CustomUser.DoesNotExist:
         return JsonResponse(
             {"error": "Usuario con este nombre de usuario no existe."},
             status=status.HTTP_400_BAD_REQUEST,
@@ -53,7 +54,7 @@ def register(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data["email"]
-            if User.objects.filter(email=email).exists():
+            if CustomUser.objects.filter(email=email).exists():
                 return JsonResponse(
                     {"error": "Este correo electrónico ya está en uso."},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -65,7 +66,9 @@ def register(request):
 
             access_token = AccessToken.for_user(user)
 
-            response = JsonResponse()
+            response = JsonResponse(
+                {"access_token": str(access_token), "user": serializer.data}
+            )
             set_access_token_cookie(response, access_token)
             return response
 
@@ -85,7 +88,7 @@ def profile(request):
         payload = access_token.payload
 
         user_id = payload.get("user_id")
-        user = User.objects.get(id=user_id)
+        user = CustomUser.objects.get(id=user_id)
 
         return JsonResponse(
             {
@@ -97,5 +100,14 @@ def profile(request):
     except (InvalidToken, TokenError):
         raise AuthenticationFailed("Unauthenticated!")
 
-    except User.DoesNotExist:
+    except CustomUser.DoesNotExist:
         raise AuthenticationFailed("Unauthenticated!")
+
+
+@api_view(["GET"])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAdminUser])
+def get_all_users(request):
+    users = CustomUser.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return JsonResponse(serializer.data)
