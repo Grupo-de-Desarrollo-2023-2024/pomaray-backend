@@ -31,7 +31,8 @@ urlpatterns = [
     path('login', views.login),
     path('register', views.register),
     path('profile', views.profile),
-    path('verify', views.verifyToken.as_view()),
+    
+
   
     
     

@@ -1,18 +1,23 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+)
 from .serializers import UserSerializer
-from rest_framework.authtoken.models import Token
-from django.shortcuts import get_object_or_404
+from datetime import timedelta
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-from django.contrib.auth import authenticate
-from django.core.exceptions import PermissionDenied
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
-import jwt, datetime
-from django.views import View
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import AccessToken
+
+
+token_lifetime = timedelta(hours=1)
+
+
+def set_access_token_cookie(response, access_token):
+    response.set_cookie(key="access_token", value=str(access_token), httponly=True)
 
 
 @api_view(["POST"])
@@ -20,28 +25,25 @@ def login(request):
     try:
         user = User.objects.get(username=request.data["username"])
     except User.DoesNotExist:
-        return Response(
+        return JsonResponse(
             {"error": "Usuario con este nombre de usuario no existe."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
     if not user.check_password(request.data["password"]):
-        return Response(
+        return JsonResponse(
             {"error": "Contraseña incorrecta."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    payload = {
-            'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
-        }
+    access_token = AccessToken.for_user(user)
+    access_token.set_exp(lifetime=token_lifetime)
 
-    token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
     serializer = UserSerializer(instance=user)
-    response = Response()
-    response.set_cookie(key="token", value=token, httponly=True)
-    response.data = {"token": token, "user": serializer.data}
+    response = JsonResponse(
+        {"access_token": str(access_token), "user": serializer.data}
+    )
+    set_access_token_cookie(response, access_token)
     return response
 
 
@@ -50,72 +52,50 @@ def register(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            # Verificamos la unicidad del correo electrónico
             email = serializer.validated_data["email"]
             if User.objects.filter(email=email).exists():
-                return Response(
+                return JsonResponse(
                     {"error": "Este correo electrónico ya está en uso."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            # Guardamos el usuario y creamos el token
             user = serializer.save()
             user.set_password(serializer.validated_data["password"])
             user.save()
-            payload = {
-            'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
-        }
 
-            token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
-            
-            response = Response()
-            
-            response.set_cookie(key="token", value=token, httponly=True)
-            
-            response.data = {"token": token, "user": serializer.data}
-            
+            access_token = AccessToken.for_user(user)
+
+            response = JsonResponse()
+            set_access_token_cookie(response, access_token)
             return response
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 def profile(request):
-    if not request.user.is_authenticated:
-        raise PermissionDenied({"message": "Unauthenticated!"})
-
     user = request.user
-
-    response_data = {
-        "id": user.id,
-        "email": user.email,
-        "username": user.username,
-    }
-
-    return Response(response_data)
-
-class verifyToken(View):
-    def get(self, request):
-        token = request.COOKIES.get('token')
-
+    try:
+        token = request.COOKIES.get("access_token")
         if not token:
-            raise PermissionDenied({'message': 'Unauthenticated!'})
+            raise AuthenticationFailed("Unauthenticated!")
 
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise PermissionDenied({'message': 'Unauthenticated!'})
+        access_token = AccessToken(token)
+        payload = access_token.payload
 
-        try:
-            user = User.objects.get(id=payload['id'])
-        except User.DoesNotExist:
-            raise PermissionDenied({'message': 'Unauthenticated!'})
+        user_id = payload.get("user_id")
+        user = User.objects.get(id=user_id)
 
-        return JsonResponse({
-            'id': user.id,
-            'email': user.email,
-            'username': user.username,
-        })
+        return JsonResponse(
+            {
+                "id": user.id,
+                "email": user.email,
+                "username": user.username,
+            }
+        )
+    except (InvalidToken, TokenError):
+        raise AuthenticationFailed("Unauthenticated!")
+
+    except User.DoesNotExist:
+        raise AuthenticationFailed("Unauthenticated!")
