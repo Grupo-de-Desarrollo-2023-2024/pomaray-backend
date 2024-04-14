@@ -2,7 +2,7 @@ from django.db import models
 from pomaray.utils.person import Person
 from pomaray.utils.enums import Techniques, Course
 from datetime import datetime
-
+from backend.models import CustomUser   
 
 class Student(Person):
     Technique = models.CharField(max_length=255, choices=Techniques.choices)
@@ -10,6 +10,7 @@ class Student(Person):
     RNE = models.CharField(
         max_length=13, unique=True, default="JD05050000"
     )  # Campo RNE
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         # Generación del campo RNE

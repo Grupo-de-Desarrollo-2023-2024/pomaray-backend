@@ -16,7 +16,7 @@ class Person(models.Model):
     IsActive = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        self.Full_Name = f"{self.First_Name} {self.Last_Name}"
+        self.Full_Name = f"{self.First_Name} {self.Last_Name} {self.Sur_Name}"
         super().save(*args, **kwargs)
 
     def __str__(self):

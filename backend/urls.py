@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
+from pomaray.views import student_user
 from blog.views import post
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,7 +32,7 @@ urlpatterns = [
     path('login/', views.login),
     path('register/', views.register),
     path('profile/', views.profile),
-    
+    path('student/user/',student_user.create_student_user), 
 
   
     
