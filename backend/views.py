@@ -1,7 +1,7 @@
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
-    permission_classes
+    permission_classes,
 )
 from .serializers import UserSerializer
 from datetime import timedelta
@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.permissions import IsAdminUser
+from django.contrib.auth.hashers import check_password
 
 token_lifetime = timedelta(hours=1)
 
@@ -22,16 +23,49 @@ def set_access_token_cookie(response, access_token):
 
 
 @api_view(["POST"])
-def login(request):
+def student_login(request):
     try:
-        user = CustomUser.objects.get(username=request.data["username"])
+        user = CustomUser.objects.get(
+            username=request.data["username"], groups=1
+        )
     except CustomUser.DoesNotExist:
         return JsonResponse(
-            {"error": "Usuario con este nombre de usuario no existe."},
+            {
+                "error": "Usuario con este nombre de usuario no existe o no es un estudiante."
+            },
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    if not user.check_password(request.data["password"]):
+    if not check_password(request.data["password"], user.password):
+        return JsonResponse(
+            {"error": "Contraseña incorrecta."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    access_token = AccessToken.for_user(user)
+    access_token.set_exp(lifetime=token_lifetime)
+
+    serializer = UserSerializer(instance=user)
+    response = JsonResponse(
+        {"access_token": str(access_token), "user": serializer.data}
+    )
+    set_access_token_cookie(response, access_token)
+    return response
+
+
+@api_view(["POST"])
+def admin_login(request):
+    try:
+        user = CustomUser.objects.get(username=request.data["username"], groups=2)
+    except CustomUser.DoesNotExist:
+        return JsonResponse(
+            {
+                "error": "Usuario con este nombre de usuario no existe o no es un administrador."
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    if not check_password(request.data["password"], user.password):
         return JsonResponse(
             {"error": "Contraseña incorrecta."},
             status=status.HTTP_400_BAD_REQUEST,
