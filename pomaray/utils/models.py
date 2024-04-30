@@ -1,5 +1,5 @@
 from django.db import models
-from pomaray.models.employee import Employee
+from backend.models import CustomUser
 from pomaray.models.student import Student
 from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
@@ -23,7 +23,7 @@ class Qualification(models.Model):
     )
     CF = models.IntegerField(default=0)
     Teacher = models.ForeignKey(
-        Employee,
+        CustomUser,
         on_delete=models.CASCADE,
     )
 

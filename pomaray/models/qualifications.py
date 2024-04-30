@@ -3,7 +3,6 @@ from pomaray.utils.models import Qualification
 from pomaray.utils.enums import Subject
 from pomaray.models.moduletechnique import ModuleTechnique
 
-
 class academicQualification(Qualification):
     Subject = models.CharField(
         max_length=100, choices=Subject.choices, default=Subject.OTHER
